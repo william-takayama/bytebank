@@ -6,108 +6,156 @@ class BytebankApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: TransferenceForm(),
+      home: ListOfTransferences(),
+      // theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.purple[800],
+        accentColor: Colors.purple[700],
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.purple[700],
+          textTheme: ButtonTextTheme.primary,
+        ),
       ),
     );
   }
 }
 
-class TransferenceForm extends StatelessWidget {
-  final TextEditingController fieldAccountNumberController =
+class TransferenceForm extends StatefulWidget {
+  final TextEditingController _fieldAccountNumberController =
       TextEditingController();
-  final TextEditingController fieldValueController = TextEditingController();
+  final TextEditingController _fieldValueController = TextEditingController();
 
+  void _createTransference(BuildContext context) {
+    final int accountNumber = int.tryParse(_fieldAccountNumberController.text);
+    final double value = double.tryParse(_fieldValueController.text);
+    if (accountNumber != null && value != null) {
+      final createdTransference = Transference(value, accountNumber);
+      debugPrint('Creating transference');
+      debugPrint('$createdTransference');
+      Navigator.pop(context, createdTransference);
+    }
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    return StateOfTransferenceForm();
+  }
+}
+
+class StateOfTransferenceForm extends State<TransferenceForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Appbar'),
-        backgroundColor: Colors.red[500],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
-            child: TextField(
-              controller: fieldAccountNumberController,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration: InputDecoration(
-                labelText: 'Account number',
-                hintText: '0000',
-              ),
-              keyboardType: TextInputType.number,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Editor(
+                controller: widget._fieldAccountNumberController,
+                label: 'Account Number',
+                hint: '0000'),
+            Editor(
+                controller: widget._fieldValueController,
+                label: 'Value',
+                hint: '0.00',
+                icon: Icons.monetization_on),
+            RaisedButton(
+              child: Text('Confirm'),
+              onPressed: () => widget._createTransference(context),
             ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-            child: TextField(
-              controller: fieldValueController,
-              style: TextStyle(
-                fontSize: 24.0,
-              ),
-              decoration: InputDecoration(
-                icon: Icon(Icons.monetization_on),
-                labelText: 'Value',
-                hintText: '0.00',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-          ),
-          RaisedButton(
-            child: Text('Confirm'),
-            onPressed: () {
-              debugPrint('clicked');
-              final int accountNumber =
-                  int.tryParse(fieldAccountNumberController.text);
-              final double value = double.tryParse(fieldValueController.text);
-              if (accountNumber != null && value != null) {
-                final createdTransference = Transference(value, accountNumber);
-                debugPrint('$createdTransference');
-              }
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-class ListOfTransfers extends StatelessWidget {
+class Editor extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final IconData icon;
+
+  const Editor({this.controller, this.label, this.hint, this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(
+          fontSize: 24.0,
+        ),
+        decoration: InputDecoration(
+          icon: icon != null ? Icon(icon) : null,
+          labelText: label,
+          hintText: hint,
+        ),
+        keyboardType: TextInputType.number,
+      ),
+    );
+  }
+}
+
+class ListOfTransferences extends StatefulWidget {
+  final List<Transference> _transferences = List();
+
+  @override
+  State<StatefulWidget> createState() {
+    return StateOfListOfTransferences();
+  }
+}
+
+class StateOfListOfTransferences extends State<ListOfTransferences> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tranferências'),
-        backgroundColor: Colors.green[600],
       ),
-      body: Column(
-        children: [
-          TransferItem(Transference(100, 123)),
-          TransferItem(Transference(200, 123)),
-          TransferItem(Transference(400, 123)),
-        ],
+      body: ListView.builder(
+        itemCount: widget._transferences.length,
+        itemBuilder: (context, index) {
+          final transference = widget._transferences[index];
+          return TransferenceItem(transference);
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print('test'),
+        onPressed: () {
+          final Future<Transference> future =
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return TransferenceForm();
+          }));
+          future.then((receivedTransference) {
+            Future.delayed(Duration(seconds: 1), () {
+              debugPrint('receive transference');
+              debugPrint('$receivedTransference');
+              if (receivedTransference != null) {
+                setState(() {
+                  widget._transferences.add(receivedTransference);
+                });
+              }
+            });
+          });
+        },
         child: Icon(Icons.add),
       ),
     );
   }
 }
 
-class TransferItem extends StatelessWidget {
+class TransferenceItem extends StatelessWidget {
   final Transference transference;
 
-  TransferItem(this.transference);
+  TransferenceItem(this.transference);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.green[100],
       shadowColor: Colors.black12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
       child: ListTile(
