@@ -18,7 +18,7 @@
   - VSCode (Editor) using flutter and DART plugins
   - Github
 <p align="center">
-  <img alt="app developed using Flutter" src="https://imgur.com/gallery/ZTKL0OY" width="760px" />
+  <img alt="app developed using Flutter" src="https://i.imgur.com/YU4DxFn.png" width="760px" />
 </p>
 
 ## :rocket: Goal:
