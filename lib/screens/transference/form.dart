@@ -50,8 +50,23 @@ class StateOfTransferenceForm extends State<TransferenceForm> {
                 label: _labelValue,
                 hint: _hintValue,
                 icon: Icons.monetization_on),
-            RaisedButton(
+            ElevatedButton(
               child: Text(_textBtnConfirmation),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black,
+                minimumSize: Size(300, 50),
+                textStyle: TextStyle(
+                  fontSize: 16.0,
+                ),
+                side: BorderSide(
+                  color: Color.fromRGBO(255, 255, 255, 1.0),
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
               onPressed: () => widget._createTransference(context),
             ),
           ],
