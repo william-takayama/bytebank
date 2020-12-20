@@ -5,11 +5,13 @@ class Editor extends StatelessWidget {
   final String label;
   final String hint;
   final IconData icon;
+  final TextInputType inputType;
 
   const Editor({
-    this.controller,
-    this.label,
-    this.hint,
+    @required this.controller,
+    @required this.label,
+    @required this.hint,
+    this.inputType = TextInputType.number,
     this.icon,
   });
 
@@ -18,16 +20,16 @@ class Editor extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       child: TextField(
-        controller: controller,
+        controller: this.controller,
         style: TextStyle(
           fontSize: 24.0,
         ),
         decoration: InputDecoration(
           icon: icon != null ? Icon(icon) : null,
-          labelText: label,
-          hintText: hint,
+          labelText: this.label,
+          hintText: this.hint,
         ),
-        keyboardType: TextInputType.number,
+        keyboardType: this.inputType,
       ),
     );
   }
