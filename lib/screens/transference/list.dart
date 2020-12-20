@@ -11,7 +11,7 @@ class ListOfTransferences extends StatefulWidget {
   }
 }
 
-const _titleAppBar = 'Tranferências';
+const _titleAppBar = 'Transferences';
 
 class StateOfListOfTransferences extends State<ListOfTransferences> {
   @override
