@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 const _appBarTitle = 'Contact Form';
 const _labelContactName = 'Name';
-const _hintContactName = 'Dom Foxinhos';
+const _hintContactName = 'Type your name here';
 const _labelContactAccontNumber = 'Account Number';
 const _hintContactAccontNumber = '0000';
 const _submitButtonText = 'Create';
@@ -53,7 +53,7 @@ class _ContactFormState extends State<ContactForm> {
                   final int accountNumber =
                       int.tryParse(_fieldContactAccountNumberController.text);
 
-                  final Contact newContact = Contact(name, accountNumber);
+                  final Contact newContact = Contact(0, name, accountNumber);
 
                   Navigator.pop(context, newContact);
                 },
