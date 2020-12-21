@@ -11,17 +11,16 @@ const _hintContactAccontNumber = '0000';
 const _submitButtonText = 'Create';
 
 class ContactForm extends StatefulWidget {
-  @override
-  _ContactFormState createState() => _ContactFormState();
-}
-
-class _ContactFormState extends State<ContactForm> {
   final TextEditingController _fieldContactNameController =
       TextEditingController();
 
   final TextEditingController _fieldContactAccountNumberController =
       TextEditingController();
+  @override
+  _ContactFormState createState() => _ContactFormState();
+}
 
+class _ContactFormState extends State<ContactForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +32,13 @@ class _ContactFormState extends State<ContactForm> {
         child: Column(
           children: [
             Editor(
-              controller: _fieldContactNameController,
+              controller: widget._fieldContactNameController,
               hint: _hintContactName,
               label: _labelContactName,
               inputType: TextInputType.text,
             ),
             Editor(
-              controller: _fieldContactAccountNumberController,
+              controller: widget._fieldContactAccountNumberController,
               hint: _hintContactAccontNumber,
               label: _labelContactAccontNumber,
               inputType: TextInputType.number,
@@ -49,9 +48,9 @@ class _ContactFormState extends State<ContactForm> {
               child: ElevatedButton(
                 child: Text(_submitButtonText),
                 onPressed: () {
-                  final String name = _fieldContactNameController.text;
-                  final int accountNumber =
-                      int.tryParse(_fieldContactAccountNumberController.text);
+                  final String name = widget._fieldContactNameController.text;
+                  final int accountNumber = int.tryParse(
+                      widget._fieldContactAccountNumberController.text);
 
                   final Contact newContact = Contact(0, name, accountNumber);
 
