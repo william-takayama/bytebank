@@ -13,7 +13,8 @@ class Dashboard extends StatelessWidget {
       appBar: MyAppBar(
         title: _appBarTitle,
       ),
-      body: Column(
+      body: Flex(
+        direction: Axis.vertical,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -21,7 +22,6 @@ class Dashboard extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Image.asset(
               _logoImage,
-              width: double.maxFinite,
             ),
           ),
           Padding(
