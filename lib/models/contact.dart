@@ -11,6 +11,6 @@ class Contact {
 
   @override
   String toString() {
-    return 'Transference{value: $name}, accountNumber: $accountNumber';
+    return 'Contact{id: $id, value: $name, accountNumber: $accountNumber}';
   }
 }
