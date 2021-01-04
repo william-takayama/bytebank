@@ -4,8 +4,11 @@ class Transference {
 
   Transference(this.value, this.accountNumber);
 
-  @override
-  String toString() {
-    return 'Transference{value: $value}, accountNumber: $accountNumber';
+  String toStringValue() {
+    return 'R\$ $value';
+  }
+
+  String toStringAccount() {
+    return 'Account: $accountNumber';
   }
 }

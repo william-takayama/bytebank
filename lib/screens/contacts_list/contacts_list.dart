@@ -71,9 +71,11 @@ class _ContactsListState extends State<ContactsList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final Future<dynamic> push = await Navigator.of(context).push(
+          await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ContactForm(),
+              builder: (context) {
+                return new ContactForm();
+              },
             ),
           );
           setState(() {
